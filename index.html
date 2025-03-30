@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Grocery Shopping</title>
+    <link rel="stylesheet" href="welcome-style.css">
+</head>
+<body>
+    <div class="floating-vegetables">
+        <img src="https://cdn-icons-png.flaticon.com/512/3194/3194766.png" alt="carrot" class="veg v1">
+        <img src="https://cdn-icons-png.flaticon.com/512/2153/2153788.png" alt="tomato" class="veg v2">
+        <img src="https://cdn-icons-png.flaticon.com/512/2153/2153793.png" alt="broccoli" class="veg v3">
+        <img src="https://cdn-icons-png.flaticon.com/512/2153/2153786.png" alt="apple" class="veg v4">
+        <img src="https://cdn-icons-png.flaticon.com/512/2153/2153791.png" alt="banana" class="veg v5">
+        <img src="https://cdn-icons-png.flaticon.com/512/2153/2153787.png" alt="pepper" class="veg v6">
+    </div>
+
+    <div class="welcome-container">
+        <div class="content">
+            <h1>🛒 Let's Go Shopping! 🛍️</h1>
+            <p>Ready to make your shopping list?</p>
+            <button onclick="startShopping()" class="start-btn">
+                <span>Start Shopping</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function startShopping() {
+            const veggies = document.querySelectorAll('.veg');
+            const btn = document.querySelector('.start-btn');
+
+            // Animate vegetables and button
+            veggies.forEach((veg, index) => {
+                veg.classList.add('throw-away');
+                veg.style.animationDelay = `${index * 0.1}s`;
+                // Randomize horizontal direction
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                veg.style.setProperty('--random-direction', direction);
+            });
+
+            btn.classList.add('button-clicked');
+
+            // Transition to shopping page
+            setTimeout(() => {
+                window.location.href = 'shopping.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

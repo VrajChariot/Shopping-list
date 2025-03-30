@@ -1,0 +1,342 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); /* Softer gradient */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide any potential overflow */
+    padding: 1em; /* Add padding for small screens */
+}
+
+.welcome-container {
+    text-align: center;
+    padding: 2.5em; /* Adjusted padding */
+    background: rgba(255, 255, 255, 0.85); /* More transparency */
+    border-radius: 1.875em; /* Adjusted border-radius */
+    box-shadow: 0 0.75em 1.5em rgba(0, 0, 0, 0.15); /* Adjusted shadow */
+    width: 90%; /* Flexible width */
+    max-width: 40.625em; /* Maximum width */
+    min-height: 28.125em; /* Adjusted min-height */
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.start-btn {
+    margin-top: 2.5em; /* Adjusted margin */
+    padding: 1em 3em; /* Adjusted padding */
+    font-size: 1.375em; /* Adjusted font-size */
+    background: #64b5f6; /* More modern color */
+    color: white;
+    border: none;
+    border-radius: 3.125em; /* Adjusted border-radius */
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.2); /* Adjusted shadow */
+}
+
+.start-btn:hover {
+    transform: translateY(-0.3125em); /* Adjusted transform */
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.3); /* Adjusted shadow */
+}
+
+.start-btn .cart {
+    display: inline-block;
+    margin-left: 0.75em; /* Adjusted margin */
+    transition: all 0.3s;
+}
+
+.start-btn:hover .cart {
+    transform: scale(1.3); /* Larger cart on hover */
+}
+
+.cart {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.75em; /* Adjusted margin */
+    font-size: 1.625em; /* Adjusted font-size */
+    z-index: 3;
+    transition: all 0.3s;
+}
+
+.cart.explode {
+    animation: explode 0.5s ease-out forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+h1 {
+    font-size: 3em; /* Adjusted font-size */
+    color: #37474f; /* Darker color */
+    margin-bottom: 1.5625em; /* Adjusted margin */
+    text-shadow: 0.0625em 0.0625em 0.125em rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+}
+
+p {
+    font-size: 1.375em; /* Adjusted font-size */
+    color: #546e7a; /* Darker color */
+    margin-bottom: 1.875em; /* Adjusted margin */
+}
+
+.floating-vegetables {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1; /* Keep behind content */
+}
+
+.veg {
+    position: absolute;
+    width: 3.125em; /* Adjusted width */
+    height: 3.125em; /* Adjusted height */
+    animation: float 9s infinite; /* Slower animation */
+    opacity: 0.9; /* More visible */
+    transform-origin: center;
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Added transition */
+}
+
+/* Spread vegetables around the container */
+.v1 { top: 18%; left: 18%; }
+.v2 { top: 13%; right: 18%; }
+.v3 { bottom: 33%; left: 23%; }
+.v4 { bottom: 28%; right: 23%; }
+.v5 { top: 43%; left: 13%; }
+.v6 { top: 38%; right: 13%; }
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(1.25em, -1.25em) rotate(8deg); }
+    66% { transform: translate(-0.9375em, 0.9375em) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.veg.collect {
+    animation: none;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: fixed;
+    transform: translate(
+        calc(var(--final-x) - 50%), 
+        calc(var(--final-y) - 50%)
+    ) scale(0.1);
+    opacity: 0;
+    z-index: 5;
+}
+
+@keyframes collect {
+    to {
+        transform: translate(-50%, -50%) scale(0.5);
+        top: 50%;
+        left: 50%;
+        opacity: 0;
+    }
+}
+
+/* Add button fill animation */
+.start-btn.filling {
+    overflow: hidden;
+    background: transparent;
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.start-btn.filled {
+    background: transparent;
+    color: white;
+    transform: scale(1.1);
+}
+
+.veg.expand {
+    animation: expandVeg 0.8s forwards;
+    opacity: 1;
+    transform-origin: center;
+    z-index: 5;
+}
+
+@keyframes expandVeg {
+    0% {
+        transform: translate(-50%, -50%) scale(0.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(10);
+        opacity: 1;
+    }
+}
+
+/* Add bounce animation */
+.veg.bounce {
+    animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-1.875em); }
+    100% { transform: translateY(0); }
+}
+
+/* Add zoom animation */
+.veg.zoom {
+    animation: zoom 1s ease-in-out forwards;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform-origin: center;
+    z-index: 5;
+}
+
+@keyframes zoom {
+    0% {
+        transform: translate(
+            calc(var(--final-x) - 50%),
+            calc(var(--final-y) - 50%)
+        ) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc(var(--final-x) - 50%),
+            calc(var(--final-y) - 50%)
+        ) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Move vegetables to button animation */
+.veg.move-to-button {
+    position: fixed;
+    animation: moveToButton 0.8s ease-in-out forwards;
+    z-index: 5;
+}
+
+@keyframes moveToButton {
+    to {
+        transform: translate(
+            calc(var(--final-x) - 50%),
+            calc(var(--final-y) - 50%)
+        ) scale(0.2);
+        opacity: 0;
+    }
+}
+
+/* Zoom in on button animation */
+.start-btn.zoom-button {
+    animation: zoomButton 0.5s ease-in-out forwards;
+}
+
+@keyframes zoomButton {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* Throw away animation for vegetables */
+.veg.throw-away {
+    animation: throwAway 0.7s ease-out forwards;
+    transform-origin: center;
+}
+
+@keyframes throwAway {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 0.8;
+    }
+    80% {
+        transform: scale(1.7) translateY(-6.25em) translateX(calc(var(--random-direction) * 6.25em)) rotate(270deg);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(2.2) translateY(12.5em) translateX(calc(var(--random-direction) * 12.5em)) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Button clicked style */
+.start-btn.button-clicked {
+    background-color: white;
+    color: black;
+    border: 2px solid #64b5f6; /* Match button color */
+    box-shadow: 0 0.375em 0.75em rgba(0, 0, 0, 0.25); /* Enhanced shadow */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .welcome-container {
+        width: 95%;
+        min-height: auto;
+        padding: 2em;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    .start-btn {
+        font-size: 1.2em;
+        padding: 0.8em 2em;
+    }
+
+    .veg {
+        width: 2.5em;
+        height: 2.5em;
+    }
+}
+
+@media (max-width: 576px) {
+    .welcome-container {
+        padding: 1.5em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    .start-btn {
+        font-size: 1em;
+        padding: 0.6em 1.5em;
+    }
+
+    .veg {
+        width: 2em;
+        height: 2em;
+    }
+}

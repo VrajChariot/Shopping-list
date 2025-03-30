@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); /* Welcome page gradient */
+    min-height: 100vh;
+    padding: 1em; /* Add padding for small screens */
+}
+
+.container {
+    max-width: 90%; /* Flexible width */
+    width: 34.375em; /* Adjusted max-width */
+    margin: 2em auto; /* Adjusted margin */
+    padding: 1.875em; /* Adjusted padding */
+    background-color: rgba(255, 255, 255, 0.85); /* Welcome page background */
+    box-shadow: 0 0.75em 1.5em rgba(0, 0, 0, 0.15); /* Adjusted shadow */
+    border-radius: 1.875em; /* Adjusted border-radius */
+    position: relative;
+    padding-bottom: 1.875em; /* Adjusted padding */
+}
+
+h1 {
+    text-align: center;
+    color: #37474f; /* Welcome page heading color */
+    margin-bottom: 2.1875em; /* Adjusted margin */
+    font-size: 2em; /* Adjusted font-size */
+    text-shadow: 0.0625em 0.0625em 0.125em rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+}
+
+h2 {
+    color: #37474f; /* Welcome page heading color */
+    margin: 1.5625em 0 0.9375em 0; /* Adjusted margin */
+    font-size: 1.375em; /* Adjusted font-size */
+}
+
+.add-item {
+    display: flex;
+    gap: 0.75em; /* Adjusted gap */
+    margin-bottom: 1.5625em; /* Adjusted margin */
+    flex-direction: column; /* Stack on smaller screens */
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 0.875em; /* Adjusted padding */
+    font-size: 1.125em; /* Adjusted font-size */
+    border: 1px solid #ced4da;
+    border-radius: 0.5em; /* Adjusted border-radius */
+    box-shadow: inset 0 0.0625em 0.1875em rgba(0, 0, 0, 0.05); /* Adjusted shadow */
+}
+
+input[type="number"] {
+    width: auto; /* Adjust width */
+    padding: 0.875em; /* Adjusted padding */
+    font-size: 1.125em; /* Adjusted font-size */
+    border: 1px solid #ced4da;
+    border-radius: 0.5em; /* Adjusted border-radius */
+    box-shadow: inset 0 0.0625em 0.1875em rgba(0, 0, 0, 0.05); /* Adjusted shadow */
+}
+
+button {
+    padding: 0.875em 1.75em; /* Adjusted padding */
+    background-color: #64b5f6; /* Welcome page button color */
+    color: white;
+    border: none;
+    border-radius: 3.125em; /* Adjusted border-radius */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.125em; /* Adjusted font-size */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.2); /* Adjusted shadow */
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #3f51b5;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    padding: 0.875em 1.125em; /* Adjusted padding */
+    background-color: rgba(248, 249, 250, 0.7); /* Softer list background */
+    margin-bottom: 0.625em; /* Adjusted margin */
+    border-radius: 0.75em; /* Adjusted border-radius */
+    transition: all 0.3s ease;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.08); /* Adjusted shadow */
+    flex-direction: column; /* Stack on smaller screens */
+}
+
+li .item-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75em; /* Adjusted gap */
+    width: 100%; /* Full width */
+    justify-content: space-between; /* Space between item and quantity */
+}
+
+li .quantity {
+    color: #546e7a; /* Welcome page paragraph color */
+    font-size: 1em; /* Adjusted font-size */
+}
+
+li.bought {
+    background-color: rgba(232, 245, 233, 0.7); /* Softer bought background */
+    text-decoration: line-through;
+    color: #78909c;
+}
+
+#bought-list li {
+    background-color: rgba(232, 245, 233, 0.7); /* Softer bought background */
+    text-decoration: line-through;
+    color: #78909c;
+}
+
+.delete-btn {
+    background-color: #e57373;
+    color: white;
+    border: none;
+    padding: 0.5em 1em; /* Adjusted padding */
+    border-radius: 0.375em; /* Adjusted border-radius */
+    cursor: pointer;
+    margin-left: 0.75em; /* Adjusted margin */
+    box-shadow: 0 0.125em 0.375em rgba(0, 0, 0, 0.2); /* Adjusted shadow */
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.end-shopping {
+    text-align: center;
+    margin-top: 2.5em; /* Adjusted margin */
+}
+
+.end-btn {
+    padding: 1em 3em; /* Adjusted padding */
+    background-color: #64b5f6; /* Welcome page button color */
+    color: white;
+    border: none;
+    border-radius: 3.125em; /* Adjusted border-radius */
+    cursor: pointer;
+    font-size: 1.25em; /* Adjusted font-size */
+    opacity: 0.5;
+    pointer-events: none;
+    transition: all 0.3s;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.2); /* Adjusted shadow */
+}
+
+.end-btn.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.end-btn.active:hover {
+    transform: translateY(-0.1875em); /* Adjusted transform */
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.3); /* Adjusted shadow */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 1.5em;
+    }
+
+    h1 {
+        font-size: 1.75em;
+    }
+
+    h2 {
+        font-size: 1.25em;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        font-size: 1em;
+        padding: 0.7em;
+    }
+
+    button,
+    .end-btn {
+        font-size: 1em;
+        padding: 0.7em 1.5em;
+    }
+
+    li {
+        padding: 0.7em 1em;
+    }
+
+    li .quantity {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 1em;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.1em;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        font-size: 0.9em;
+        padding: 0.6em;
+    }
+
+    button,
+    .end-btn {
+        font-size: 0.9em;
+        padding: 0.6em 1.2em;
+    }
+
+    li {
+        padding: 0.6em 0.9em;
+    }
+
+    li .quantity {
+        font-size: 0.8em;
+    }
+
+    .add-item {
+        flex-direction: column; /* Stack on smaller screens */
+    }
+
+    li {
+        flex-direction: column; /* Stack on smaller screens */
+    }
+
+    li .item-content {
+        flex-direction: column; /* Stack on smaller screens */
+        align-items: flex-start; /* Align items to the start */
+    }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Shopping List</h1>
+        <div class="add-item">
+            <input type="text" id="grocery-input" placeholder="Add an item...">
+            <input type="number" id="quantity-input" value="1" min="1">
+            <button onclick="addItem()">Add</button>
+        </div>
+        <h2>To Buy</h2>
+        <ul id="grocery-list"></ul>
+        
+        <h2>Bought Items</h2>
+        <ul id="bought-list"></ul>
+        
+        <div class="end-shopping">
+            <button id="end-btn" class="end-btn">End Shopping</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
