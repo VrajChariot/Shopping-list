@@ -100,7 +100,9 @@ function shareList() {
     const bought = encodeListItems(boughtList);
 
     // Construct the URL
-    const baseUrl = window.location.href.split('?')[0]; // Get base URL without existing query parameters
+    let baseUrl = window.location.origin + window.location.pathname;
+    // Remove trailing 'shopping.html' if present
+    baseUrl = baseUrl.replace(/shopping\.html$/, '');
     const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
 
     // Share the URL
