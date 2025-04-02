@@ -31,6 +31,7 @@ function populateListFromUrl() {
                 li.querySelector('.delete-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     li.remove();
+                    updateLocalStorage();
                 });
 
                 if (bought) {
@@ -47,8 +48,73 @@ function populateListFromUrl() {
         const groceryList = document.getElementById('grocery-list');
         const boughtList = document.getElementById('bought-list');
 
-        addItemsToList(groceryList, toBuy, false);
-        addItemsToList(boughtList, bought, true);
+        // Load from local storage first
+        const storedGroceryList = localStorage.getItem('groceryList');
+        const storedBoughtList = localStorage.getItem('boughtList');
+
+        if (storedGroceryList) {
+            const groceryItems = JSON.parse(storedGroceryList);
+            groceryItems.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="item-content">
+                        <span class="item-name">${item.name}</span>
+                        <span class="quantity">${item.quantity}</span>
+                    </div>
+                    <button class="delete-btn">×</button>
+                `;
+
+                // Add click handler for bought status
+                li.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('delete-btn')) {
+                        moveItem(li);
+                    }
+                });
+
+                // Add delete handler
+                li.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    li.remove();
+                    updateLocalStorage();
+                });
+                groceryList.appendChild(li);
+            });
+        }
+
+        if (storedBoughtList) {
+            const boughtItems = JSON.parse(storedBoughtList);
+            boughtItems.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="item-content">
+                        <span class="item-name">${item.name}</span>
+                        <span class="quantity">${item.quantity}</span>
+                    </div>
+                    <button class="delete-btn">×</button>
+                `;
+
+                // Add click handler for bought status
+                li.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('delete-btn')) {
+                        moveItem(li);
+                    }
+                });
+
+                // Add delete handler
+                li.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    li.remove();
+                    updateLocalStorage();
+                });
+                li.classList.add('bought');
+                boughtList.appendChild(li);
+            });
+        }
+
+        if(toBuy || bought){
+            addItemsToList(groceryList, toBuy, false);
+            addItemsToList(boughtList, bought, true);
+        }
 
         // Activate share button after populating list
         if (typeof activateShareButton === 'function') {

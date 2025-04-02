@@ -2,7 +2,7 @@ function addItem() {
     const input = document.getElementById('grocery-input');
     const quantityInput = document.getElementById('quantity-input');
     const list = document.getElementById('grocery-list');
-    
+
     if (input.value.trim() === '') {
         alert('Please enter an item!');
         return;
@@ -10,7 +10,7 @@ function addItem() {
 
     const li = document.createElement('li');
     const quantity = quantityInput.value || 1;
-    
+
     li.innerHTML = `
         <div class="item-content">
             <span class="item-name">${input.value}</span>
@@ -18,7 +18,7 @@ function addItem() {
         </div>
         <button class="delete-btn">×</button>
     `;
-    
+
     // Add click handler for bought status
     li.addEventListener('click', (e) => {
         if (!e.target.classList.contains('delete-btn')) {
@@ -30,6 +30,7 @@ function addItem() {
     li.querySelector('.delete-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         li.remove();
+        updateLocalStorage(); // Update local storage on delete
     });
 
     list.appendChild(li);
@@ -38,13 +39,14 @@ function addItem() {
 
     // Activate share button when adding an item
     activateShareButton();
+    updateLocalStorage(); // Update local storage on add
 }
 
 // Check if all items are bought
 function checkAllBought() {
     const groceryList = document.getElementById('grocery-list');
     const endBtn = document.getElementById('end-btn');
-    
+
     if (groceryList.children.length === 0) {
         endBtn.classList.add('active');
         endBtn.onclick = () => {
@@ -56,17 +58,17 @@ function checkAllBought() {
     }
 }
 
-// Modify the moveItem function to check after moving
 function moveItem(item) {
     const groceryList = document.getElementById('grocery-list');
     const boughtList = document.getElementById('bought-list');
-    
+
     if (item.parentElement === groceryList) {
         boughtList.appendChild(item);
     } else {
         groceryList.appendChild(item);
     }
     checkAllBought();
+    updateLocalStorage(); // Update local storage on move
 }
 
 // Add observer to watch for list changes
@@ -99,26 +101,26 @@ function shareList() {
     const toBuy = encodeListItems(groceryList);
     const bought = encodeListItems(boughtList);
 
-   // Construct the URL
-   let baseUrl = window.location.origin + window.location.pathname;
-   // Remove trailing 'shopping.html' if present
-   baseUrl = baseUrl.replace(/shopping\.html$/, '');
-   const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
+    // Construct the URL
+    let baseUrl = window.location.origin + window.location.pathname;
+    // Remove trailing 'shopping.html' if present
+    baseUrl = baseUrl.replace(/shopping\.html$/, '');
+    const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
 
-   // Share the URL
-   if (navigator.share) {
-       navigator.share({
-           title: 'Shopping List',
-           url: shareableUrl,
-       })
-       .then(() => console.log('Shared successfully'))
-       .catch((error) => console.log('Error sharing:', error));
-   } else {
-       // Fallback: Copy to clipboard
-       navigator.clipboard.writeText(shareableUrl)
-           .then(() => alert('Link copied to clipboard!'))
-           .catch(err => console.error('Error copying text: ', err));
-   }
+    // Share the URL
+    if (navigator.share) {
+        navigator.share({
+            title: 'Shopping List',
+            url: shareableUrl,
+        })
+            .then(() => console.log('Shared successfully'))
+            .catch((error) => console.log('Error sharing:', error));
+    } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(shareableUrl)
+            .then(() => alert('Link copied to clipboard!'))
+            .catch(err => console.error('Error copying text: ', err));
+    }
 }
 
 // Add event listener to the share button
@@ -153,3 +155,23 @@ moveItem = (function () {
         return result;
     };
 })();
+
+function updateLocalStorage() {
+    const groceryList = document.getElementById('grocery-list');
+    const boughtList = document.getElementById('bought-list');
+
+    const groceryItems = Array.from(groceryList.children).map(item => {
+        const itemName = item.querySelector('.item-name').textContent;
+        const quantity = item.querySelector('.quantity').textContent;
+        return { name: itemName, quantity: quantity };
+    });
+
+    const boughtItems = Array.from(boughtList.children).map(item => {
+        const itemName = item.querySelector('.item-name').textContent;
+        const quantity = item.querySelector('.quantity').textContent;
+        return { name: itemName, quantity: quantity };
+    });
+
+    localStorage.setItem('groceryList', JSON.stringify(groceryItems));
+    localStorage.setItem('boughtList', JSON.stringify(boughtItems));
+}
