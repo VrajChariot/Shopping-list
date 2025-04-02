@@ -99,26 +99,26 @@ function shareList() {
     const toBuy = encodeListItems(groceryList);
     const bought = encodeListItems(boughtList);
 
-    // Construct the URL
-    let baseUrl = window.location.origin + window.location.pathname;
-    // Remove trailing 'shopping.html' if present
-    baseUrl = baseUrl.replace(/shopping\.html$/, '');
-    const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
+   // Construct the URL
+   let baseUrl = window.location.origin + window.location.pathname;
+   // Remove trailing 'shopping.html' if present
+   baseUrl = baseUrl.replace(/shopping\.html$/, '');
+   const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
 
-    // Share the URL
-    if (navigator.share) {
-        navigator.share({
-            title: 'Shopping List',
-            url: shareableUrl,
-        })
-        .then(() => console.log('Shared successfully'))
-        .catch((error) => console.log('Error sharing:', error));
-    } else {
-        // Fallback: Copy to clipboard
-        navigator.clipboard.writeText(shareableUrl)
-            .then(() => alert('Link copied to clipboard!'))
-            .catch(err => console.error('Error copying text: ', err));
-    }
+   // Share the URL
+   if (navigator.share) {
+       navigator.share({
+           title: 'Shopping List',
+           url: shareableUrl,
+       })
+       .then(() => console.log('Shared successfully'))
+       .catch((error) => console.log('Error sharing:', error));
+   } else {
+       // Fallback: Copy to clipboard
+       navigator.clipboard.writeText(shareableUrl)
+           .then(() => alert('Link copied to clipboard!'))
+           .catch(err => console.error('Error copying text: ', err));
+   }
 }
 
 // Add event listener to the share button
@@ -153,3 +153,56 @@ moveItem = (function () {
         return result;
     };
 })();
+
+function populateListFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const toBuy = urlParams.get('toBuy');
+    const bought = urlParams.get('bought');
+    const groceryList = document.getElementById('grocery-list');
+    const boughtList = document.getElementById('bought-list');
+
+    function addItemsToList(list, itemsString, bought) {
+        if (itemsString) {
+            const items = itemsString.split(';');
+            items.forEach(itemString => {
+                const [itemName, quantity] = itemString.split('(');
+                const quantityValue = quantity ? quantity.slice(0, -1) : 1; // Remove the closing parenthesis
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="item-content">
+                        <span class="item-name">${itemName.trim()}</span>
+                        <span class="quantity">(${quantityValue})</span>
+                    </div>
+                    <button class="delete-btn">×</button>
+                `;
+
+                // Add click handler for bought status
+                li.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('delete-btn')) {
+                        moveItem(li);
+                    }
+                });
+
+                // Add delete handler
+                li.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    li.remove();
+                });
+
+                if (bought) {
+                    li.classList.add('bought');
+                }
+
+                list.appendChild(li);
+            });
+        }
+    }
+
+    addItemsToList(groceryList, toBuy, false);
+    addItemsToList(boughtList, bought, true);
+
+    // Activate share button after populating list
+    activateShareButton();
+    checkShareButtonActivation(); // Add this line
+}
