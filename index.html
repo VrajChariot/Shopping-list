@@ -47,6 +47,18 @@
                 window.location.href = 'shopping.html';
             }, 1000);
         }
+
+        // Check for shared link parameters
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toBuy = urlParams.get('toBuy');
+            const bought = urlParams.get('bought');
+
+            if (toBuy || bought) {
+                window.location.href = 'shopping.html' + window.location.search;
+            }
+        };
     </script>
+    <script src="url-handler.js"></script>
 </body>
 </html>
