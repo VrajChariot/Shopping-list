@@ -35,6 +35,9 @@ function addItem() {
     list.appendChild(li);
     input.value = '';
     quantityInput.value = '1';
+
+    // Activate share button when adding an item
+    activateShareButton();
 }
 
 // Check if all items are bought
@@ -76,3 +79,75 @@ document.getElementById('grocery-input').addEventListener('keypress', (e) => {
         addItem();
     }
 });
+
+function shareList() {
+    const groceryList = document.getElementById('grocery-list');
+    const boughtList = document.getElementById('bought-list');
+
+    // Function to encode list items
+    function encodeListItems(list) {
+        let items = [];
+        for (let i = 0; i < list.children.length; i++) {
+            const item = list.children[i];
+            const itemName = item.querySelector('.item-name').textContent;
+            const quantity = item.querySelector('.quantity').textContent;
+            items.push(`${itemName} ${quantity}`);
+        }
+        return items.join(';'); // Using semicolon as a separator
+    }
+
+    const toBuy = encodeListItems(groceryList);
+    const bought = encodeListItems(boughtList);
+
+    // Construct the URL
+    const baseUrl = window.location.href.split('?')[0]; // Get base URL without existing query parameters
+    const shareableUrl = `${baseUrl}?toBuy=${encodeURIComponent(toBuy)}&bought=${encodeURIComponent(bought)}`;
+
+    // Share the URL
+    if (navigator.share) {
+        navigator.share({
+            title: 'Shopping List',
+            url: shareableUrl,
+        })
+        .then(() => console.log('Shared successfully'))
+        .catch((error) => console.log('Error sharing:', error));
+    } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(shareableUrl)
+            .then(() => alert('Link copied to clipboard!'))
+            .catch(err => console.error('Error copying text: ', err));
+    }
+}
+
+// Add event listener to the share button
+document.getElementById('share-btn').addEventListener('click', shareList);
+
+function activateShareButton() {
+    const shareBtn = document.getElementById('share-btn');
+    shareBtn.classList.add('active');
+}
+
+function checkShareButtonActivation() {
+    const groceryList = document.getElementById('grocery-list');
+    const boughtList = document.getElementById('bought-list');
+    const shareBtn = document.getElementById('share-btn');
+
+    if (groceryList.children.length > 0 || boughtList.children.length > 0) {
+        shareBtn.classList.add('active');
+    } else {
+        shareBtn.classList.remove('active');
+    }
+}
+
+// Call checkShareButtonActivation on page load
+window.onload = checkShareButtonActivation;
+
+// Also call checkShareButtonActivation after moving an item
+moveItem = (function () {
+    var cached_function = moveItem;
+    return function () {
+        var result = cached_function.apply(this, arguments); // use .apply() to call it
+        checkShareButtonActivation();
+        return result;
+    };
+})();
